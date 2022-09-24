@@ -1,0 +1,252 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Tarifários</div>
+    </div>
+    <!--end breadcrumb-->
+
+
+    <div class="card">
+      <div class="card-body">
+
+
+        <ul class="nav nav-tabs nav-success" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+              <div class="d-flex align-items-center">
+                <div class="tab-title">Tarifário Nacional</div>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false">
+              <div class="d-flex align-items-center">
+                <div class="tab-title">Tarifário Internacional</div>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+
+        <div class="tab-content py-3">
+
+
+          <div class="tab-pane fade show active" id="primaryhome" role="tabpanel">
+
+
+                <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+                  <div class="ms-auto">
+                    <a
+                      class="btn btn-success radius-30 mt-2 mt-lg-0"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleScrollableModal"
+                      (click)="showDialog('modal_1', 'add')"
+                    >
+                      <i class="bx bxs-plus-square"></i>Adicionar Tarifario</a
+                    >
+                  </div>
+                </div>
+
+
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th><p class="text-center">Operadora</p></th>
+                        <th><p class="text-center">Tem Iva</p></th>
+                        <th><p class="text-center">Mesma Rede</p></th>
+                        <th><p class="text-center">Valor</p></th>
+                        <th><p class="text-center">Acções</p></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of tarifarios; let i = index">
+                        <td><p class="text-center">{{item.operadora.descricao}}</p></td>
+                        <td>
+                          <div class="d-flex order-actions justify-content-center">
+                            <div class="badge rounded-pill bg-light-success p-2 text-uppercase px-3"
+                            [ngClass]="{'text-success': item.temIva ,'text-danger': !item.temIva}">
+                            <i class="bx bxs-circle me-1"></i>{{item.temIva ? 'SIM' : 'NÃO'}}
+                          </div>
+                          </div></td>
+                        <td>
+                          <div class="d-flex order-actions justify-content-center">
+                            <div class="badge rounded-pill bg-light-success p-2 text-uppercase px-3"
+                            [ngClass]="{'text-success': item.mesmaRede ,'text-danger': !item.mesmaRede}">
+                            <i class="bx bxs-circle me-1"></i>{{item.mesmaRede ? 'SIM' : 'NÃO'}}
+                          </div>
+                          </div>
+                        <td><p class="text-center">{{item.valor}}</p></td>
+                        <td>
+                          <div class="d-flex order-actions justify-content-center">
+                            <a href="javascript:;" class="ms-3"
+                               data-bs-toggle="modal"
+                               data-bs-target="#exampleScrollableModal"
+                               (click)="UpdateTarifario(item.id)"
+                              ><i class="bx bxs-edit"></i
+                            ></a>
+                            <a href="javascript:;" class="ms-3"
+
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleScrollableModal2"
+                              (click)="SelectDataForDelete(item.id)"
+                              ><i class="bx bxs-trash"></i
+                            ></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+          </div>
+
+
+          <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+
+            <app-tarifario-list-internacional></app-tarifario-list-internacional>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<!-- Modal One Add Tarifarição-->
+<div
+  class="modal fade"
+  id="exampleScrollableModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Adicionar Tarifario Nacional</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3"  [formGroup]="tarifarioForm" novalidate>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Operadora</label>
+            <select id="inputState" class="form-select" formControlName="operadora">
+              <option *ngFor="let item of operadoras; let i = index" [value]="item.id">{{item.descricao}}</option>
+            </select>
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && tarifarioForm.controls.operadora.errors?.required">
+                *Selecionar uma operadora é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Tem IVA</label>
+            <select id="inputState" class="form-select" formControlName="temIva">
+              <option  [value]="1">SIM</option>
+              <option  [value]="0">NÃO</option>
+            </select>
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && tarifarioForm.controls.temIva.errors?.required">
+                *Selecionar se tem IVA ou não é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Mesma Rede</label>
+            <select id="inputState" class="form-select" formControlName="mesmaRede">
+              <option  [value]="1">SIM</option>
+              <option  [value]="0">NÃO</option>
+            </select>
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && tarifarioForm.controls.mesmaRede.errors?.required">
+                *Selecionar se é mesma rede ou não é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Valor</label>
+            <input type="number" class="form-control" id="inputFirstName" formControlName="valor">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && tarifarioForm.controls.valor.errors?.required">
+                *Preencher o valor é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button (click)="RegistarTarifario()" type="button" class="btn btn-success"   type="submit" type="button">{{button_Name}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Two SIM/NÃO-->
+<div
+  class="modal fade"
+  id="exampleScrollableModal2"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Tarifario</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label>Tem a certeza que deseja eliminar o tarifario ?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          NÃO
+        </button>
+        <button data-bs-dismiss="modal" (click)="DeleteTarifario()" type="button" class="btn btn-success"   type="submit" type="button">SIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+
+

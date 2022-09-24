@@ -1,0 +1,159 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Impressões</div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+          <div class="position-relative">
+            <input
+              type="text"
+              class="form-control ps-5 radius-30"
+              placeholder="Pesquisar"
+            />
+            <span
+              class="position-absolute top-50 product-show translate-middle-y"
+              ><i class="bx bx-search"></i
+            ></span>
+          </div>
+          <div class="ms-auto">
+            <a
+              class="btn btn-primary radius-30 mt-2 mt-lg-0"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleScrollableModal"
+            >
+              <i class="bx bxs-plus-square"></i>Nova Impressão</a
+            >
+
+
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Ficheiro</th>
+                <th>Data do pedido</th>
+                <th>Data de impressão</th>
+                <th>Estado</th>
+                <th>Ver detalhe</th>
+                <th>Acções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of PedidosImpressao; let i = index">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div><i class='bx bxs-file me-2 font-24 text-primary'></i>
+                    </div>
+                    <div class="font-weight-bold text-primary">{{item.fileName}}</div>
+                  </div>
+                  <!-- <div class="d-flex align-items-center">
+                    <div class="ms-2">
+                      <h6 class="mb-0 font-14">{{item.fileName}}</h6>
+                    </div>
+                  </div> -->
+                </td>
+                <td>
+                  {{item.dataPedido}}
+                </td>
+                <td>{{item.dataProcessamento}}</td>
+                <td>                  <div
+                  class="
+                    badge
+                    rounded-pill
+                    text-success
+                    bg-light-success
+                    p-2
+                    text-uppercase
+                    px-3
+                  ">
+                  <i class="bx bxs-circle me-1"></i>{{item.estadoPedido.descricao}}
+                </div></td>
+                <td><button (click)="  GoToPedidoDetalhe(item)" type="button" class="btn btn-primary btn-sm radius-30 px-4">View Details</button></td>
+                <td>
+                  <div class="d-flex order-actions">
+                    <a href="javascript:;" class=""
+                      ><i class="bx bxs-show"></i
+                    ></a>
+                    <a href="javascript:;" class="ms-3"
+                      ><i class="bx bxs-edit"></i
+                    ></a>
+                    <a href="javascript:;" class="ms-3"
+                      ><i class="bx bx-download"></i
+                    ></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleScrollableModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nova Declaração</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3">
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Aluno</label>
+            <select id="inputState" class="form-select">
+              <option selected>Mário</option>
+              <option>António</option>
+            </select>
+          </div>
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Tipo</label>
+            <select id="inputState" class="form-select">
+              <option selected>DECLARAÇÃO COM NOTAS</option>
+              <option>DECLARAÇÃO SEM NOTAS</option>
+            </select>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputFirstName" class="form-label">Observação</label>
+            <textarea
+              class="form-control"
+              id="inputAddress"
+              placeholder="Observação..."
+              rows="2"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button type="button" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>

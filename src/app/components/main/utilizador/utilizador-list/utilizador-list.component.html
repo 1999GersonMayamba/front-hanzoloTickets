@@ -1,0 +1,224 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Utilizadores</div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+<!--
+          <div class="position-relative">
+            <input
+              type="text"
+              class="form-control ps-5 radius-30"
+              placeholder="Pesquisar"
+            />
+            <span
+              class="position-absolute top-50 product-show translate-middle-y"
+              ><i class="bx bx-search"></i
+            ></span>
+          </div> -->
+
+
+          <div class="ms-auto" *ngIf="SeeConfigMenu">
+            <a
+              class="btn btn-success radius-30 mt-2 mt-lg-0"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleScrollableModal"
+            >
+              <i class="bx bxs-plus-square"></i>Adicionar Utilizador</a
+            >
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Nome de utilizador</th>
+                <th>Email</th>
+                <!-- <th>Login</th> -->
+                <th>Estado</th>
+                <!-- <th>Niveis</th> -->
+                <th>Permissões</th>
+                <th *ngIf="SeeConfigMenu">Acções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of Users; let i = index">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="ms-2">
+                      <h6 class="mb-0 font-14">{{item.userName}}</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>{{item.email}}</td>
+                <!-- <td>{{item.userName}}</td> -->
+                <td>
+                  <div
+                    class="
+                      badge
+                      rounded-pill
+                      text-success
+                      bg-light-success
+                      p-2
+                      px-3"
+                      [ngClass]="{'text-success': item.isActivo,'text-danger': !item.isActivo}">
+                    <i class="bx bxs-circle me-1"></i>{{item.isActivo ? 'Activo':'Não Activo'}}
+                  </div>
+                </td>
+                <!-- <td>Hernani Neto</td> -->
+                <td>
+                    <div class="d-flex" >
+                    <div class="p-1" *ngFor="let item of item.roles; let i = index"><span class="badge bg-success">{{item.name}}</span></div>
+                  </div>
+                </td>
+                <td *ngIf="SeeConfigMenu">
+                  <div class="d-flex order-actions">
+                    <!-- <a href="javascript:;" class=""
+                      ><i class="bx bxs-show"></i
+                    ></a> -->
+                    <a href="javascript:;" class="ms-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleScrollableModal"
+                    (click)="UpdatePrefixo(item.id)"
+                      ><i class="bx bxs-edit"></i
+                    ></a>
+                    <a href="javascript:;" class="ms-3"
+
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleScrollableModal2"
+                      (click)="SelectDataForDelete(item.id)"
+                      ><i class="bx bxs-trash"></i
+                    ></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleScrollableModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Adicionar Utilizador</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" [formGroup]="utilizadorForm" novalidate>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Nome Completo</label>
+            <input type="text" class="form-control" id="inputFirstName" formControlName="nomeCompleto">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && utilizadorForm.controls.nomeCompleto.errors?.required">
+                *Uma nome para utilizador é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputFirstName" formControlName="email">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && utilizadorForm.controls.email.errors?.required">
+                *Uma email para o utilizador é obrigatório
+              </p>
+            </div>
+          </div>
+
+<!--
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Permissões</label>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 row-cols-xl-4" >
+              <div class="col" *ngFor="let item of Roles; let i = index">
+                <input class="form-check-input me-3" type="checkbox" [value]="item.id" aria-label="..." formControlName="checkRole">
+                {{item.name}}
+              </div>
+
+            </div>
+          </div> -->
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Permissão</label>
+            <select id="inputState" class="form-select" formControlName="checkRole">
+              <option *ngFor="let item of Roles; let i = index" [value]="item.id">{{item.name}}</option>
+            </select>
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && utilizadorForm.controls.checkRole.errors?.required">
+                *Selecionar uma permissão para o utilizador é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button type="button" class="btn btn-success" (click)="onSubmit()"  type="submit" type="button">{{button_Name}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Two SIM/NÃO-->
+<div
+  class="modal fade"
+  id="exampleScrollableModal2"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Utilizador</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label>Tem a certeza que deseja eliminar o utilizador ?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          NÃO
+        </button>
+        <button data-bs-dismiss="modal" (click)="DeleteTarifario()" type="button" class="btn btn-success"   type="submit" type="button">SIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>

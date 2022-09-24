@@ -1,0 +1,207 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Interações</div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+
+
+
+        <!-- HEADER DO CARD *CAMPOS PARA SE FAZER O FILTRO -->
+        <form class="row g-3" [formGroup]="filterForm" novalidate>
+
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+          <div class="col-md-2">
+            <label for="inputState" class="form-label">Agent ID</label>
+            <select id="inputState" class="form-select" formControlName="agentId">
+              <option *ngFor="let item of Agents" [value]="item.extension">{{item.firstName + ' ' + item.lastName + ' (' + item.extension + ')'}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="inputState" class="form-label">Estado</label>
+            <select id="inputState" class="form-select" formControlName="estadoId">
+              <option *ngFor="let item of TCalls" [value]="item.descricao">{{item.descricao}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Data Inicio</label>
+            <input type="date" class="form-control" formControlName="dataInicio">
+          </div>
+
+
+          <div class="col-md-2">
+            <label class="form-label">Data Fim</label>
+            <input type="date" class="form-control" formControlName="dataFim">
+          </div>
+
+
+          <div class="ms-auto">
+
+
+            <a
+            data-bs-toggle="modal"
+            data-bs-target="#confMatricula"
+              class="btn btn-success radius-30 mt-2 mt-lg-0" (click)="onSubmit()">
+              <i class="bx bxs-plus-square" ></i>Pesquisar</a
+            >
+
+              <a class="btn btn-success radius-30 mt-2 mt-lg-0 mx-2" (click)="ExportToExcelReport()">
+              <i class="bx bxs-plus-square"></i>Exportar Relatório</a>
+              <!-- <button (click)="onSubmit()"  type="submit" type="button" class="btn btn-primary">Exportar Relatório</button> -->
+
+          </div>
+        </div>
+
+       </form>
+
+
+       <!-- ITEMS DA TABELA -->
+        <div class="table-responsive">
+          <table class="table mb-0" id="excel-table">
+
+            <!-- CABEÇALHO DA TABELA -->
+            <thead class="table-light">
+              <tr>
+                <th><p class="text-center">Data da chamada</p></th>
+                <th><p class="text-center">Hora da chamada</p></th>
+                <th><p class="text-center">Utilizador</p></th>
+                <th><p class="text-center">Extensão</p></th>
+                <th><p class="text-center">Destino</p></th>
+                <th><p class="text-center">Estado</p></th>
+                <!-- <th>Tempo de toque</th> -->
+                <th><p class="text-center">Tempo de interação</p></th>
+                <!-- <th>Duração</th> -->
+                <th><p class="text-center">Custo da chamada</p></th>
+              </tr>
+            </thead>
+
+            <!-- CORPO DA TABELA -->
+            <tbody>
+              <tr *ngFor="let item of Calls | paginate : {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: count
+              }; let i = index">
+                <td><p class="text-center">{{item.dataChamada}}</p></td>
+                <td><p class="text-center">{{item.horaChamada}}</p></td>
+                <td><p class="text-center">{{item.agentFirstName + ' ' + item.agentLastName}}</p></td>
+                <td><p class="text-center">{{item.agent}}</p></td>
+                <td><p class="text-center">{{item.num}}</p></td>
+                <td>
+                  <div class="d-flex order-actions justify-content-center">
+                    <div class="badge rounded-pill bg-light-success p-2 text-uppercase px-3"
+                    [ngClass]="{'text-success': item.callType == 'Outbound','text-danger': item.callType == 'Notanswered'}">
+                    <i class="bx bxs-circle me-1"></i>{{item.callType == 'Outbound' ? 'Atendida': 'Não atendida'}}
+                  </div>
+                  </div></td>
+                <!-- <td>{{item.duration}}</td> -->
+                <td><p class="text-center font-weight-bold">{{item.talkingTime}}</p></td>
+                <!-- <td>{{item.duration}}</td> -->
+                <td><p class="text-center font-weight-bold">{{item.custoCall + ' Kz'}}</p></td>
+              </tr>
+            </tbody>
+
+            <!-- RODAPÉ DA TABELA -->
+            <tfoot>
+              <tr>
+                <td><p class="font-weight-bold text-uppercase text-center">Total</p></td>
+                <td><p class="text-center font-weight-bold"></p></td>
+                <td><p class="text-center font-weight-bold"></p></td>
+                <td><p class="text-center font-weight-bold"></p></td>
+                <td><p class="text-center font-weight-bold">{{TotalItemsCurrentPage}}</p></td>
+                <td><p class="text-center font-weight-bold"></p></td>
+                <td><p class="text-center font-weight-bold">{{TotalTimeCallDuration}}</p></td>
+                <td><p class="text-center font-weight-bold">{{TotalCustomCall + ' Kz'}}</p></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+<!--PAGINAÇÃO -->
+    <div class="d-flex justify-content-center">
+      <pagination-controls previousLabel="Anterior"
+                           nextLabel="Proximo"
+                           [maxSize] = 10
+                           [directionLinks] = true
+                           [responsive]=true
+                           screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page"
+                           (pageChange)="handlePageChange($event)"></pagination-controls>
+  </div>
+
+
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleScrollableModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nova Declaração</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3">
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Aluno</label>
+            <select id="inputState" class="form-select">
+              <option selected>Mário</option>
+              <option>António</option>
+            </select>
+          </div>
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Tipo</label>
+            <select id="inputState" class="form-select">
+              <option selected>DECLARAÇÃO COM NOTAS</option>
+              <option>DECLARAÇÃO SEM NOTAS</option>
+            </select>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputFirstName" class="form-label">Observação</label>
+            <textarea
+              class="form-control"
+              id="inputAddress"
+              placeholder="Observação..."
+              rows="2"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button type="button" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>

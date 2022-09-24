@@ -1,0 +1,195 @@
+<div class="bg-login">
+  <!--wrapper-->
+  <div class="wrapper">
+    <div class="
+        section-authentication-signin
+        d-flex
+        align-items-center
+        justify-content-center
+        my-5 my-lg-0
+      ">
+      <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+          <div class="col mx-auto">
+            <div class="mb-4 text-center">
+              <img src="assets/images/logo-hanzolo.png" width="180" alt="" />
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="border p-4 rounded">
+                  <div class="text-center">
+                    <h3 class="">Entrar</h3>
+                    <!-- <p>
+                      Ainda não possui nenhuma conta?
+                      <a [routerLink]="['/register']" routerLinkActive="router-link-active">Registar-se aqui</a>
+                    </p> -->
+                  </div>
+                  <!-- <div class="login-separater text-center mb-4">
+                    <span>OU PODE ACEDER A SUA CONTA COM EMAIL</span>
+                    <hr />
+                  </div> -->
+                  <div class="form-body">
+                    <form class="row g-3" [formGroup]="loginForm" novalidate>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <label for="inputEmailAddress" class="form-label">Email
+                            </label>
+                          </div>
+
+                          <div class="col-sm-6 text-end text-danger">
+                            <p *ngIf="
+                                isValidFormSubmitted &&
+                                loginForm.controls.Email.errors?.required
+                              ">
+                              *Email é obrigatório
+                            </p>
+                          </div>
+                        </div>
+
+                        <input formControlName="Email" type="email" class="form-control" id="inputEmailAddress"
+                          placeholder="example@gmail.com" />
+                      </div>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <label for="inputChoosePassword" class="form-label">Senha</label>
+                          </div>
+
+                          <div class="col-sm-6 text-end text-danger">
+                            <p *ngIf="
+                                isValidFormSubmitted &&
+                                loginForm.controls.Password.errors?.required
+                              ">
+                              *Senha é obrigatório
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="input-group" id="show_hide_password">
+                          <input formControlName="Password" type="password" class="form-control border-end-0"
+                            id="inputChoosePassword" placeholder="Digite a sua senha" />
+                          <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check form-switch">
+                          <input formControlName="CheckPassword" class="form-check-input" type="checkbox"
+                            id="flexSwitchCheckChecked" />
+                          <label class="form-check-label" for="flexSwitchCheckChecked">Lembrar-me</label>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-6 text-end">
+                        <a [routerLink]="['/forgotpassword']" routerLinkActive="router-link-active">Esqueceu a sua senha
+                          ?</a>
+                      </div> -->
+                      <div class="col-12">
+                        <div class="d-grid">
+                          <button (click)="onSubmit()" [disabled]="loginForm.invalid" type="submit"
+                            class="btn btn-primary">
+                            <i class="bx bxs-lock-open"></i>Entrar
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+
+
+  </div>
+  <!--end wrapper-->
+</div>
+
+    <!-- Modal Para alterar senha -->
+    <app-modaldialog id="modal_1" class="hhidden">
+      <!-- Modal -->
+      <div class="modal" tabindex="-1" [ngStyle]="{ display: 'block' }">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Alterar Senha</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="closeDialog('modal_1')"></button>
+            </div>
+            <div class="modal-body">
+              <form class="row g-3" [formGroup]="alterarsenhaForm" novalidate>
+                <div class="col-md-12">
+                  <label for="inputState" class="form-label">Nova senha</label>
+                  <div class="input-group" id="show_hide_passwordTwo">
+                    <input formControlName="novaSenha" type="password" class="form-control border-end-0"
+                       placeholder="Digite a sua senha" />
+                    <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+                  </div>
+                  <div class="text-end text-danger">
+                    <p *ngIf=" isValidFormSubmitted &&
+                        loginForm.controls.novaSenha.errors?.required
+                      ">
+                      *A senha é obrigatório
+                    </p>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <label for="inputState" class="form-label">Repetir nova senha</label>
+                  <div class="input-group" id="show_hide_passwordThree">
+                    <input formControlName="repetirNovaSenha" type="password" class="form-control border-end-0"
+                       placeholder="Digite a sua senha" />
+                    <a href="javascript:;" class="input-group-text bg-transparent"><i class="bx bx-hide"></i></a>
+                  </div>
+                  <div class="text-end text-danger">
+                    <p *ngIf=" isValidFormSubmittedPassword &&
+                        loginForm.controls.repetirNovaSenha.errors?.required
+                      ">
+                      *A nova senha é obrigatório
+                    </p>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button (click)="closeDialog('modal_1')" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Fechar
+              </button>
+              <button (click)="AlterarSenha()" type="button" class="btn btn-success" [disabled]="alterarsenhaForm.invalid" >
+                Alterar a senha
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-modaldialog>
+
+
+        <!-- Modal de loding -->
+        <app-modaldialog id="modal_2" class="hhidden">
+          <!-- Modal -->
+          <div class="modal" tabindex="-1" [ngStyle]="{ display: 'block' }">
+            <div class="modal-dialog modal-dialog-centered modal-lg" >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Aguarde...</h5>
+                </div>
+                <div class="modal-body">
+                  <div class="d-flex align-items-center">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"> <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status"> <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+
+                </div>
+              </div>
+            </div>
+        </app-modaldialog>
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+

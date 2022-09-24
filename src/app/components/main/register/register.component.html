@@ -1,0 +1,262 @@
+<div class="bg-login">
+
+	<!--wrapper-->
+	<div class="wrapper">
+		<div class="d-flex align-items-center justify-content-center my-5 my-lg-0">
+			<div class="container">
+				<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2">
+					<div class="col mx-auto">
+						<div class="my-4 text-center">
+							<img src="assets/images/logo-img.png" width="180" alt="" />
+						</div>
+						<div class="card">
+							<div class="card-body">
+								<div class="border p-4 rounded">
+									<div class="text-center">
+										<h3 class="">Registar-se</h3>
+										<p>Já posui uma conta? <a [routerLink]="['/login']"  routerLinkActive="router-link-active">entrar</a>
+										</p>
+									</div>
+									<div class="login-separater text-center mb-4"> <span>OU PODE CRIAR A SUA CONTA COM O EMAIL</span>
+										<hr/>
+									</div>
+									<div class="form-body">
+										<form class="row g-3" [formGroup]="registerForm" novalidate>
+											<div class="col-12">
+
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <label for="inputEmailAddress" class="form-label">Nome Da Instituição
+                            </label>
+                          </div>
+
+                          <div class="col-sm-6 text-end text-danger">
+                            <p *ngIf="
+                                isValidFormSubmitted &&
+                                registerForm.controls.firstName.errors?.required
+                              ">
+                              *Nome Da Instituição é obrigatório
+                            </p>
+                          </div>
+                        </div>
+												<input formControlName="NomeInstituicao" type="email" class="form-control"  placeholder="Jhon">
+											</div>
+                      <div class="col-sm-6">
+												<label for="inputSelectCountry" class="form-label">Tipo de instituição</label>
+												<select (change)="onSelectedTipoInstituicaoChange($event)"  formControlName="TipoInstituicao"  class="form-select"  aria-label="Default select example">
+													<option *ngFor="let item of TInstituicao" [value]="item.idTipoInstituicao">{{item.descricao}}</option>
+												</select>
+											</div>
+                      <div class="col-sm-6">
+												<label for="inputSelectCountry" class="form-label">Sub tipo de instituição</label>
+												<select formControlName="SubTipoInstituicao" class="form-select"  aria-label="Default select example">
+                          <option *ngFor="let item of TSubTipoInstituicao" [value]="item.idSubTipoInstituicao">{{item.descricao}}</option>
+												</select>
+											</div>
+											<div class="col-12">
+
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <label for="inputEmailAddress" class="form-label">Email
+                            </label>
+                          </div>
+
+                          <div class="col-sm-6 text-end text-danger">
+                            <p *ngIf="
+                                isValidFormSubmitted &&
+                                registerForm.controls.Email.errors?.required
+                              ">
+                              *Email é obrigatório
+                            </p>
+                          </div>
+                        </div>
+												<input formControlName="Email" type="email" class="form-control"  placeholder="example@user.com">
+											</div>
+
+                      <div class="col-sm-6">
+
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <label for="inputEmailAddress" class="form-label">Endereço
+                            </label>
+                          </div>
+
+
+                          <div class="col-sm-6 text-end text-danger">
+                            <p *ngIf="
+                                isValidFormSubmitted &&
+                                registerForm.controls.Endereco.errors?.required
+                              ">
+                              *Endereço é obrigatório
+                            </p>
+                          </div>
+                        </div>
+
+                        <input formControlName="Endereco" type="email" class="form-control"  placeholder="example@user.com">
+											</div>
+
+                      <div class="col-sm-6">
+
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <label
+                             class="form-label">NIF
+                            </label>
+                          </div>
+
+                          <div class="col-sm-6 text-end text-danger">
+                            <p *ngIf="
+                                isValidFormSubmitted &&
+                                registerForm.controls.Nif.errors?.required
+                              ">
+                              *NIF é obrigatório
+                            </p>
+                          </div>
+                        </div>
+
+												<input formControlName="Nif" type="email" class="form-control"  placeholder="007482279LA040">
+											</div>
+
+											<div class="col-12">
+
+
+                            <div class="form-check form-switch">
+                              <input formControlName="AceptTermsOfCondictions" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                              <label class="form-check-label" for="flexSwitchCheckChecked">Eu li e aceito os termos e condições</label>
+                            </div>
+                       </div>
+
+
+											<div class="col-12">
+												<div class="d-grid">
+													<button  (click)="onSubmit()" [disabled]="registerForm.invalid" type="submit" class="btn btn-primary"><i class='bx bx-user'></i>Regsitar-se</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>
+
+    <!-- Modal de termos & condições da pagina -->
+    <app-modaldialog id="modal_1" class="hhidden">
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" [ngStyle]="{'display':'block'}">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Termos e condições</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+              Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </p>
+            <p>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+              magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+              ullamcorper nulla non metus auctor fringilla.
+            </p>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+              Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </p>
+            <p>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+              magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+              ullamcorper nulla non metus auctor fringilla.
+            </p>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+              Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </p>
+            <p>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+              magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+              ullamcorper nulla non metus auctor fringilla.
+            </p>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+              Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </p>
+            <p>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+              magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+              ullamcorper nulla non metus auctor fringilla.
+            </p>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+              Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </p>
+            <p>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+              magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+              ullamcorper nulla non metus auctor fringilla.
+            </p>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+              Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </p>
+            <p>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+              magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+              ullamcorper nulla non metus auctor fringilla.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button (click)="RejeitarTermosCondicoes()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Rejeitar
+            </button>
+            <button (click)="AceitarTermosCondicoes()" type="button" class="btn btn-primary">Aceitar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </app-modaldialog>
+
+
+	</div>
+
+</div>
+	<!--end wrapper-->

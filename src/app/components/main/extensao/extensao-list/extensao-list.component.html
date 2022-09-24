@@ -1,0 +1,224 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Extensões</div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+
+        <form class="row g-3" [formGroup]="pesquisarForm" >
+
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+          <div class="position-relative">
+            <input
+              type="text"
+              class="form-control ps-5 radius-30"
+              placeholder="Extensão"
+              formControlName="number"
+            />
+
+          </div>
+
+
+          <div class="ms-auto">
+            <a
+              class="btn btn-success radius-30 mt-2 mt-lg-0"
+              (click)="PesquisarExtensao()">
+              <i class="bx bxs-plus-square"></i>Pesquisar</a
+            >
+          </div>
+
+
+        </div>
+
+      </form>
+
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead class="table-light">
+              <tr>
+                <th><p class="text-center">Nome Completo</p></th>
+                <th><p class="text-center">Extensão</p></th>
+                <th><p class="text-center">Envia Mensagem</p></th>
+                <th><p class="text-center">Acções</p></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of extensoes | paginate : {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: count
+              }; let i = index">
+                <td><p class="text-center">{{item.firstName + ' ' + item.lastName}}</p></td>
+                <td><p class="text-center">{{item.extension}}</p></td>
+                <td><div class="d-flex order-actions justify-content-center">
+                  <div class="badge rounded-pill bg-light-success p-2 text-uppercase px-3"
+                  [ngClass]="{'text-success': item.sendMessage ,'text-danger': !item.sendMessage}">
+                  <i class="bx bxs-circle me-1"></i>{{item.sendMessage ? 'SIM' : 'NÃO'}}
+                </div>
+                </div></td>
+                <td>
+                  <div class="d-flex order-actions justify-content-center">
+                    <!-- <a href="javascript:;" class=""
+                      ><i class="bx bxs-show"></i
+                    ></a> -->
+                    <a href="javascript:;" class="ms-3"
+                    data-bs-toggle="modal"
+                       data-bs-target="#exampleScrollableModal"
+                       (click)="UpdateExtensao(item.idAgent)"
+                      ><i class="bx bxs-edit"></i
+                    ></a>
+                    <a href="javascript:;" class="ms-3"
+
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleScrollableModal2"
+                      (click)="SelectDataForDelete(item.idAgent)"
+                      ><i class="bx bxs-trash"></i
+                    ></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!--PAGINAÇÃO -->
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel="Anterior"
+    nextLabel="Proximo"
+    [maxSize] = 10
+    [directionLinks] = true
+    [responsive]=true
+    screenReaderPaginationLabel="Pagination"
+    screenReaderPageLabel="page"
+    screenReaderCurrentLabel="You're on page"
+    (pageChange)="handlePageChange($event)"></pagination-controls>
+</div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleScrollableModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Extensão</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3" [formGroup]="extensaoForm" novalidate >
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="inputFirstName" formControlName="nome">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && extensaoForm.controls.nome.errors?.required">
+                *Um nome é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Sobre Nome</label>
+            <input type="text" class="form-control" id="inputFirstName" formControlName="sobreNome">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && extensaoForm.controls.sobreNome.errors?.required">
+                *Um sobre nome é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Extensão</label>
+            <input type="text" class="form-control" id="inputFirstName" formControlName="extensao">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && extensaoForm.controls.extensao.errors?.required">
+                *Uma extensão é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Enviar Mensagem</label>
+            <select id="inputState" class="form-select" formControlName="sendMessage">
+              <option  [value]="valor1">SIM</option>
+              <option  [value]="valor2">NÃO</option>
+            </select>
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && extensaoForm.controls.sendMessage.errors?.required">
+                *Selecionar uma permissão para o utilizador é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button (click)="ActualizarExtensao()" type="button" class="btn btn-success"   type="submit" type="button">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Two SIM/NÃO-->
+<div
+  class="modal fade"
+  id="exampleScrollableModal2"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Extensão</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label>Tem a certeza que deseja eliminar a extensão ?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          NÃO
+        </button>
+        <button data-bs-dismiss="modal" (click)="DeleteExtensao()" type="button" class="btn btn-success"   type="submit" type="button">SIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+

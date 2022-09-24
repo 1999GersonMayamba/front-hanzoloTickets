@@ -1,0 +1,119 @@
+<div class="card">
+  <div class="card-body p-4">
+    <h5 class="card-title">Adicionar nova impressão</h5>
+    <hr />
+    <div class="form-body mt-4">
+
+
+      <div class="row">
+
+        <div class="col-lg-6">
+
+
+        <form class="row g-3" [formGroup]="pedidoForm" novalidate>
+
+        <div class="border border-3 p-4 rounded">
+
+            <!-- Modelo de impressão de report -->
+            <div class="mb-3">
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="inputProductTitle" class="form-label">Modelo de impressão</label>
+                </div>
+
+                <div class="col-sm-6 text-end text-danger">
+                  <p *ngIf="isValidFormSubmitted && pedidoForm.controls.ModeloImpressao.errors?.required">
+                    *Modelo de impressão é obrigatório
+                  </p>
+                </div>
+              </div>
+
+
+
+              <select (change)="onSelectedModeloImpressaoChange($event)" class="form-select" id="inputProductType" formControlName="ModeloImpressao">
+                <option *ngFor="let item of TModeloReport" [value]="item.idModeloReport">{{item.descricao}}</option>
+              </select>
+            </div>
+
+
+            <!-- Descrição do pedido -->
+            <div class="mb-3">
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="inputProductDescription" class="form-label">Descrição</label>
+                </div>
+
+                <div class="col-sm-6 text-end text-danger">
+                  <p *ngIf="isValidFormSubmitted && pedidoForm.controls.Descricao.errors?.required">
+                    *Uma descricao do pedido é obrigatório
+                  </p>
+                </div>
+              </div>
+
+              <textarea formControlName="Descricao" class="form-control" id="inputProductDescription" rows="3"></textarea>
+            </div>
+
+
+            <!-- Arrastar ficheiros aqui -->
+            <div class="mb-3">
+              <label for="inputProductDescription" class="form-label">Arrastar o ficheiro</label>
+
+              <!-- Aréa de operação para arrastar o file -->
+              <div class="b3  p-4 rounded" (fileDrop)="onFilePicked($event)" ngxFileDropzone>
+
+                <div class="d-flex justify-content-center">
+
+                  <div>
+                    <div class="font-50 text-primary">
+                      <i class="lni lni-cloud-upload"></i>
+                    </div>
+                </div>
+
+                </div>
+
+
+                <div>
+                  <hr/>
+                  <p class="text-center">{{MsgFile}}</p>
+                  <hr />
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button ngxFilePicker (filePick)="onFilePicked($event)" type="button" class="btn btn-outline-info px-5 radius-30">Ou selecionar o ficheiro</button>
+                </div>
+
+            </div>
+          </div>
+
+          <!-- Botão para efectuar o pedido -->
+          <div class="col-12">
+            <div class="d-grid">
+              <button (click)="onSubmit()"  type="submit" type="button" class="btn btn-primary">Salvar pedido</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+        </div>
+
+        <div class="col-lg-6">
+          <div class="border border-3 p-4 rounded">
+            <div class="row g-3">
+              <label for="inputPrice" class="form-label">Simulação de impressão</label>
+          </div>
+          </div>
+
+
+      </div>
+
+
+
+
+      <!--end row-->
+
+    </div>
+  </div>
+</div>

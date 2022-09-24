@@ -1,0 +1,247 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Manutenções</div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+
+
+
+        <!-- HEADER DO CARD *CAMPOS PARA SE FAZER O FILTRO -->
+        <form class="row g-3" [formGroup]="filterForm" novalidate>
+
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+          <div class="col-md-2">
+            <label for="inputState" class="form-label">Número da manutenção</label>
+            <input type="number" class="form-control" id="numero" formControlName="numero" name="numero">
+          </div>
+
+          <div class="col-md-2">
+            <label for="inputState" class="form-label">Estado</label>
+            <select id="inputState" class="form-select" formControlName="estadoId">
+              <option *ngFor="let item of TCalls" [value]="item.descricao">{{item.descricao}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Data da manutenção</label>
+            <input type="date" class="form-control" formControlName="dataInicio">
+          </div>
+
+
+          <div class="col-md-2">
+            <label class="form-label">Data de resolução</label>
+            <input type="date" class="form-control" formControlName="dataFim">
+          </div>
+
+
+          <div class="ms-auto">
+
+
+            <a
+              class="btn btn-primary radius-30 mt-2 mt-lg-0" >
+              <i class="bx bxs-plus-square" ></i>Pesquisar</a
+            >
+
+              <a
+              data-bs-toggle="modal"
+            data-bs-target="#exampleScrollableModal"
+              class="btn btn-primary radius-30 mt-2 mt-lg-0 mx-2">
+              <i class="bx bxs-plus-square"></i>Adiconar manutenção</a>
+
+
+              <!-- <button (click)="onSubmit()"  type="submit" type="button" class="btn btn-primary">Exportar Relatório</button> -->
+
+          </div>
+        </div>
+
+       </form>
+
+
+       <!-- ITEMS DA TABELA -->
+        <div class="table-responsive">
+          <table class="table mb-0" id="excel-table">
+
+            <!-- CABEÇALHO DA TABELA -->
+            <thead class="table-light">
+              <tr>
+                <th><p class="text-center">Número de manutenção</p></th>
+                <th><p class="text-center">Data da manutenção</p></th>
+                <th><p class="text-center">Data de resolução</p></th>
+                <th><p class="text-center">Utilizador</p></th>
+                <th><p class="text-center">Origem de manutenção</p></th>
+                <th><p class="text-center">Estado</p></th>
+                <!-- <th>Duração</th> -->
+                <th><p class="text-center">Opções</p></th>
+              </tr>
+            </thead>
+
+            <!-- CORPO DA TABELA -->
+            <tbody>
+              <tr *ngFor="let item of Calls | paginate : {
+                itemsPerPage: pageSize,
+                currentPage: page,
+                totalItems: count
+              }; let i = index">
+
+                <td><p class="text-center">{{item.codManutencao}}</p></td>
+                <td><p class="text-center">{{item.dataRegistoConverted}}</p></td>
+                <td><p class="text-center">{{item.dataResolucaoConverted == null ? '##/##/####' : item.dataResolucaoConverted}}</p></td>
+                <td><p class="text-center">{{item.user.firstName + ' ' + item.user.lastName}}</p></td>
+                <td>
+                  <div class="d-flex order-actions justify-content-center">
+                    <div class="badge rounded-pill bg-light-success p-2 text-uppercase px-3"
+                    [ngClass]="{'text-success': item.origemManutencao.idOrigemManutencao == '38d087eb-d70d-4582-8ba9-1501366a098c','text-danger': item.origemManutencao.idOrigemManutencao == '2cbd16cd-0a56-482d-aa42-cfda738ac9a6'}">
+                    <i class="bx bxs-circle me-1"></i>{{item.origemManutencao.descricao}}
+                  </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex order-actions justify-content-center">
+                    <div class="badge rounded-pill bg-light-success p-2 text-uppercase px-3"
+                    [ngClass]="{'text-success': item.estadoManutencao.descricao == 'Fechada',
+                                 'text-danger': item.estadoManutencao.descricao == 'Pendente',
+                                 'text-primary': item.estadoManutencao.descricao == 'Em curso'}">
+
+                    <i class="bx bxs-circle me-1"></i>{{item.estadoManutencao.descricao}}
+                  </div>
+                  </div></td>
+                <!-- <td>{{item.duration}}</td> -->
+                <td>
+
+                  <div class="d-flex order-actions justify-content-center">
+                    <a href="javascript:;" class="ms-3"
+
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar manutenção"
+
+                      ><i class="bx bxs-edit"></i
+                    ></a>
+
+                    <a href="javascript:;" class="ms-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleScrollableModal2"
+
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Eliminar manutenção"
+
+                      ><i class="bx bxs-trash"></i
+                    ></a>
+
+                    <a href="javascript:;" class="ms-3"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detalhe da manutenção"
+                    [routerLink]="['/manutencaoDetail']"
+                    (click)="SeeManutencaoDetail(item.idManutencao)"
+                      ><i class="bx bx-detail"></i
+                    ></a>
+
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+<!--PAGINAÇÃO -->
+    <div class="d-flex justify-content-center">
+      <pagination-controls previousLabel="Anterior"
+                           nextLabel="Proximo"
+                           [maxSize] = 10
+                           [directionLinks] = true
+                           [responsive]=true
+                           screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page"
+                           (pageChange)="handlePageChange($event)"></pagination-controls>
+  </div>
+
+
+</div>
+
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+
+
+<!-- MODAL -->
+<div class="modal" tabindex="-1" id="exampleScrollableModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Adicionar Manutenção</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3"  [formGroup]="manutencaoForm" novalidate>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Assunto</label>
+            <input type="text" class="form-control" id="valorr" formControlName="assunto" name="assunto">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && manutencaoForm.controls.assunto.errors?.required">
+                *Preencher um assunto é
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Projectos</label>
+
+            <ng-multiselect-dropdown
+            [placeholder]="'Selecionar os projectos'"
+            [settings]="dropdownSettings"
+            [data]="Projectos"
+            formControlName="projecto"
+            (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+            (onDeSelect)="onItemDeSelect($event)"
+            (onDeSelectAll)="onUnSelectAll()">
+        </ng-multiselect-dropdown>
+
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && manutencaoForm.controls.projecto.errors?.required">
+                *Selecionar um projecto é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Descrição</label>
+            <textarea class="form-control" id="descricao" placeholder="Descrição"  rows="3" formControlName="descricao"></textarea>
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && manutencaoForm.controls.descricao.errors?.required">
+                *Preencher a descrição é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button  (click)="RegistarManutencao()" type="button" class="btn btn-success"   type="submit" type="button">{{button_Name}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hanzolo</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+	<!--favicon-->
+	<link rel="icon" href="assets/images/logo-hanzolo.png" type="image/png"/>
+
+	<!--plugins-->
+	<link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
+	<link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+	<link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+
+
+	<!-- loader-->
+	<link href="assets/css/pace.min.css" rel="stylesheet" />
+	<script src="assets/js/pace.min.js"></script>
+
+
+	<!-- Bootstrap CSS -->
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-extended.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<link href="assets/css/app.css" rel="stylesheet">
+	<link href="assets/css/icons.css" rel="stylesheet">
+
+
+	<!-- Theme Style CSS -->
+	<link rel="stylesheet" href="assets/css/dark-theme.css" />
+	<link rel="stylesheet" href="assets/css/semi-dark.css" />
+	<link rel="stylesheet" href="assets/css/header-colors.css" />
+
+  <!-- drops files -->
+  <link href="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
+</head>
+
+
+<body>
+
+
+  <app-root></app-root>
+
+
+	<!-- Bootstrap JS -->
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<!--plugins-->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+  <script src="assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="assets/plugins/chartjs/js/Chart.min.js"></script>
+	<script src="assets/plugins/chartjs/js/Chart.extension.js"></script>
+	<!-- <script src="assets/js/index.js"></script> -->
+  <script src="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+
+	<!--app JS-->
+	<script src="assets/js/app.js"></script>
+
+  <!-- Load environment variables -->
+  <script src="assets/js/env.js"></script>
+
+  <!-- default-passive-events -->
+  <!-- <script type="module" src="node_modules/default-passive-events/dist/index.js"></script> -->
+    <!-- <script type="text/javascript" src="node_modules/default-passive-events/dist/index.js"></script> -->
+    <!-- <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script> -->
+
+
+  	<!--Password show & hide js -->
+	<script>
+
+		$(document).ready(function () {
+			$("#show_hide_password a").on('click', function (event) {
+				event.preventDefault();
+				if ($('#show_hide_password input').attr("type") == "text") {
+					$('#show_hide_password input').attr('type', 'password');
+					$('#show_hide_password i').addClass("bx-hide");
+					$('#show_hide_password i').removeClass("bx-show");
+				} else if ($('#show_hide_password input').attr("type") == "password") {
+					$('#show_hide_password input').attr('type', 'text');
+					$('#show_hide_password i').removeClass("bx-hide");
+					$('#show_hide_password i').addClass("bx-show");
+				}
+			});
+		});
+
+    $(document).ready(function () {
+			$("#show_hide_passwordThree a").on('click', function (event) {
+				event.preventDefault();
+				if ($('#show_hide_passwordThree input').attr("type") == "text") {
+					$('#show_hide_passwordThree input').attr('type', 'password');
+					$('#show_hide_passwordThree i').addClass("bx-hide");
+					$('#show_hide_passwordThree i').removeClass("bx-show");
+				} else if ($('#show_hide_passwordThree input').attr("type") == "password") {
+					$('#show_hide_passwordThree input').attr('type', 'text');
+					$('#show_hide_passwordThree i').removeClass("bx-hide");
+					$('#show_hide_passwordThree i').addClass("bx-show");
+				}
+			});
+		});
+
+    $(document).ready(function () {
+			$("#show_hide_passwordTwo a").on('click', function (event) {
+				event.preventDefault();
+				if ($('#show_hide_passwordTwo input').attr("type") == "text") {
+					$('#show_hide_passwordTwo input').attr('type', 'password');
+					$('#show_hide_passwordTwo i').addClass("bx-hide");
+					$('#show_hide_passwordTwo i').removeClass("bx-show");
+				} else if ($('#show_hide_passwordTwo input').attr("type") == "password") {
+					$('#show_hide_passwordTwo input').attr('type', 'text');
+					$('#show_hide_passwordTwo i').removeClass("bx-hide");
+					$('#show_hide_passwordTwo i').addClass("bx-show");
+				}
+			});
+		});
+
+    $('.single-select').select2({
+			theme: 'bootstrap4',
+			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+			placeholder: $(this).data('placeholder'),
+			allowClear: Boolean($(this).data('allow-clear')),
+		});
+
+
+		$('.multiple-select').select2({
+			theme: 'bootstrap4',
+			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+			placeholder: $(this).data('placeholder'),
+			allowClear: Boolean($(this).data('allow-clear')),
+		});
+
+
+    $(function () {
+			$('[data-bs-toggle="popover"]').popover();
+			$('[data-bs-toggle="tooltip"]').tooltip();
+		})
+
+	</script>
+</body>
+</html>

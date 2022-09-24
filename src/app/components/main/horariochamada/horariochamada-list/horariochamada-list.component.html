@@ -1,0 +1,178 @@
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Horário de chamada internacional</div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+
+
+          <!-- <div class="position-relative">
+            <input
+              type="text"
+              class="form-control ps-5 radius-30"
+              placeholder="Pesquisar"
+            />
+            <span
+              class="position-absolute top-50 product-show translate-middle-y"
+              ><i class="bx bx-search"></i
+            ></span>
+          </div> -->
+
+
+          <div class="ms-auto">
+            <a
+              class="btn btn-success radius-30 mt-2 mt-lg-0"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleScrollableModal" (click)="showDialog('modal_1', 'add')">
+              <i class="bx bxs-plus-square"></i>Adicionar Horário</a
+            >
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead class="table-light">
+              <tr>
+                <th><p class="text-center">Horário Inicio</p></th>
+                <th><p class="text-center">Horário Fim</p></th>
+                <th><p class="text-center">Descrição</p></th>
+                <!-- <th><p class="text-center">Prefixo</p></th> -->
+                <th><p class="text-center">Acções</p></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of horarios; let i = index">
+                <td><p class="text-center">{{item.horaMin}}</p></td>
+                <td><p class="text-center">{{item.horaMax}}</p></td>
+                <td><p class="text-center">{{item.descricao}}</p></td>
+                <td>
+                  <div class="d-flex order-actions justify-content-center">
+                    <a href="javascript:;" class="ms-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleScrollableModal"
+                    (click)="UpdateOperadora(item.idHorarioChamada)"
+                      ><i class="bx bxs-edit"></i
+                    ></a>
+                    <a href="javascript:;" class="ms-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleScrollableModal2"
+                      (click)="SelectDataForDelete(item.idHorarioChamada)"
+                      ><i class="bx bxs-trash"></i
+                    ></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- MODAL -->
+<div class="modal" tabindex="-1" id="exampleScrollableModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Adicionar Horário de chamada</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeDialog('modal_1')"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3"  novalidate [formGroup]="horarioForm">
+
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Horário Inicio</label>
+            <input type="time" class="form-control" formControlName="horarioInicio">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && horarioForm.controls.horarioInicio.errors?.required">
+                *Um nome para operadora é obrigatório
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Horário Fim</label>
+            <input type="time" class="form-control" formControlName="horarioFim">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && horarioForm.controls.horarioFim.errors?.required">
+                *Um nome para operadora é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+            <label for="inputState" class="form-label">Descrição</label>
+            <input type="email" class="form-control"  formControlName="nome">
+            <div class="text-end text-danger">
+              <p *ngIf="isValidFormSubmitted && horarioForm.controls.nome.errors?.required">
+                *Uma descrição é obrigatório
+              </p>
+            </div>
+          </div>
+
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeDialog('modal_1')" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button (click)="RegistarOperadora()" [disabled]="horarioForm.invalid" type="button" class="btn btn-success"   type="submit" type="button">{{button_Name}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Two SIM/NÃO-->
+<div
+  class="modal fade"
+  id="exampleScrollableModal2"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Horário</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label>Tem a certeza que deseja eliminar o horário ?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          NÃO
+        </button>
+        <button data-bs-dismiss="modal" (click)="DeleteOperadora()" type="button" class="btn btn-success"   type="submit" type="button">SIM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loader na tela -->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+
+
